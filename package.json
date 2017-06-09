@@ -11,8 +11,7 @@
     "prespec": "npm run lint",
     "spec": "fly spec ",
     "clean": "fly clean",
-    "superclean": "fly superclean",
-    "postinstall": "post-install.sh"
+    "superclean": "fly superclean"
   },
   "author": "Kumori",
   "license": "ISC",
