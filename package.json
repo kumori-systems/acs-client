@@ -12,7 +12,7 @@
     "spec": "fly spec ",
     "clean": "fly clean",
     "superclean": "fly superclean",
-    "postinstall": "./node_modules/.bin/tsc -p tsconfig.json --outDir build"
+    "postinstall": "echo $PWD;./node_modules/.bin/tsc -p tsconfig.json --outDir build"
   },
   "author": "Kumori",
   "license": "ISC",
