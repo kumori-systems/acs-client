@@ -12,7 +12,7 @@
     "spec": "fly spec ",
     "clean": "fly clean",
     "superclean": "fly superclean",
-    "postinstall": "./post-install.sh"
+    "postinstall": "post-install.sh"
   },
   "author": "Kumori",
   "license": "ISC",
