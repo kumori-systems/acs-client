@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const q_1 = require("q");
 const axios_1 = require("axios");
 const _1 = require(".");
 class AcsClient {
@@ -8,7 +7,7 @@ class AcsClient {
         this.basePath = basePath;
     }
     login(username, password) {
-        const deferred = q_1.defer();
+        const deferred = new Deferred();
         const loginOptions = {
             auth: { username, password },
             url: this.basePath + "/login",
@@ -29,4 +28,42 @@ class AcsClient {
     }
 }
 exports.AcsClient = AcsClient;
+class Deferred {
+    constructor() {
+        this.state = "pending";
+        this.fate = "unresolved";
+        this.promise = new Promise((resolve, reject) => {
+            this._resolve = resolve;
+            this._reject = reject;
+        });
+        this.promise.then(() => this.state = "fulfilled", () => this.state = "rejected");
+    }
+    resolve(value) {
+        if (this.fate === "resolved") {
+            throw "Deferred cannot be resolved twice";
+        }
+        this.fate = "resolved";
+        this._resolve(value);
+    }
+    reject(reason) {
+        if (this.fate === "resolved") {
+            throw "Deferred cannot be resolved twice";
+        }
+        this.fate = "resolved";
+        this._reject(reason);
+    }
+    isResolved() {
+        return this.fate === "resolved";
+    }
+    isPending() {
+        return this.state === "pending";
+    }
+    isFulfilled() {
+        return this.state === "fulfilled";
+    }
+    isRejected() {
+        return this.state === "rejected";
+    }
+}
+exports.Deferred = Deferred;
 //# sourceMappingURL=acs-client.js.map
