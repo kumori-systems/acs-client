@@ -1,5 +1,6 @@
-import q = require("q");
-import request = require("request");
+import {defer, Deferred, Promise as qPromise} from 'q';
+import Axios from 'axios';
+import {AxiosResponse, AxiosRequestConfig} from 'axios'
 import {AcsToken} from ".";
 
 export class AcsClient {
@@ -9,22 +10,24 @@ export class AcsClient {
     this.basePath = basePath;
   }
 
-  public login(username: string, password: string): q.Promise<AcsToken> {
-    const deferred = q.defer<AcsToken>();
-    const loginOptions: request.Options = {
+  public login(username: string, password: string): qPromise<AcsToken> {
+    const deferred:Deferred<AcsToken> = defer<AcsToken>();
+    const loginOptions: AxiosRequestConfig = {
       auth: {username, password},
       url: this.basePath + "/login",
     };
-    request(loginOptions, (error, response, body) => {
-      if (error != null) {
-        return deferred.reject(error);
-      }
-      if (response.statusCode !== 200) {
+
+    Axios(loginOptions)
+    .then((response:AxiosResponse) => {
+      if (response.status !== 200) {
         return deferred.reject(new Error("Unauthorized"));
       }
-      const token: AcsToken = AcsToken.fromUnderscore(JSON.parse(body));
+      const token: AcsToken = AcsToken.fromUnderscore(response.data);
       // console.log(JSON.stringify(token, null, 2));
       deferred.resolve(token);
+    })
+    .catch((reason) => {
+      deferred.reject(reason);
     });
     return deferred.promise;
   }
