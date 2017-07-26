@@ -11,15 +11,15 @@ class AcsClient {
         const deferred = new deferred_1.Deferred();
         const loginOptions = {
             auth: { username, password },
-            url: this.basePath + "/login",
+            url: this.basePath + '/login'
         };
         axios_1.default(loginOptions)
             .then((response) => {
             if (response.status !== 200) {
-                return deferred.reject(new Error("Unauthorized"));
+                return deferred.reject(new Error('Unauthorized'));
             }
             const token = _1.AcsToken.fromUnderscore(response.data);
-            // console.log(JSON.stringify(token, null, 2));
+            // console.log(JSON.stringify(token, null, 2))
             deferred.resolve(token);
         })
             .catch((reason) => {

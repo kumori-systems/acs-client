@@ -1,11 +1,11 @@
-import { AcsUser } from ".";
+import { AcsUser } from '.';
 export declare class AcsToken {
-    static fromUnderscore(data: any): AcsToken;
     accessToken: string;
     tokenType: string;
     expiresIn: number;
     refreshToken: string;
     user: AcsUser;
+    static fromUnderscore(data: any): AcsToken;
     toUnderscore(): {
         access_token: string;
         expires_in: number;

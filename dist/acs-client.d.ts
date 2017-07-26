@@ -1,4 +1,4 @@
-import { AcsToken } from ".";
+import { AcsToken } from '.';
 export declare class AcsClient {
     protected basePath: string;
     constructor(basePath: string);
