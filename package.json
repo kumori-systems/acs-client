@@ -13,7 +13,7 @@
   "author": "Kumori",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.16.2"
+    "axios": "0.16.2"
   },
   "devDependencies": {
     "tslint": "5.4.3",
