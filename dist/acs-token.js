@@ -16,7 +16,7 @@ class AcsToken {
             expires_in: this.expiresIn,
             refresh_token: this.refreshToken,
             token_type: this.tokenType,
-            user: this.user,
+            user: this.user
         };
     }
 }

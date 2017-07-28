@@ -1,31 +1,34 @@
-import q = require("q");
-import request = require("request");
-import {AcsToken} from ".";
+import Axios from 'axios'
+import {AxiosRequestConfig, AxiosResponse} from 'axios'
+import {AcsToken} from '.'
+import {Deferred} from './deferred'
 
 export class AcsClient {
-  protected basePath: string;
+  protected basePath: string
 
-  constructor(basePath: string) {
-    this.basePath = basePath;
+  constructor (basePath: string) {
+    this.basePath = basePath
   }
 
-  public login(username: string, password: string): q.Promise<AcsToken> {
-    const deferred = q.defer<AcsToken>();
-    const loginOptions: request.Options = {
+  public login (username: string, password: string): Promise<AcsToken> {
+    const deferred: Deferred<AcsToken> = new Deferred<AcsToken>()
+    const loginOptions: AxiosRequestConfig = {
       auth: {username, password},
-      url: this.basePath + "/login",
-    };
-    request(loginOptions, (error, response, body) => {
-      if (error != null) {
-        return deferred.reject(error);
+      url: this.basePath + '/login'
+    }
+
+    Axios(loginOptions)
+    .then((response: AxiosResponse) => {
+      if (response.status !== 200) {
+        return deferred.reject(new Error('Unauthorized'))
       }
-      if (response.statusCode !== 200) {
-        return deferred.reject(new Error("Unauthorized"));
-      }
-      const token: AcsToken = AcsToken.fromUnderscore(JSON.parse(body));
-      // console.log(JSON.stringify(token, null, 2));
-      deferred.resolve(token);
-    });
-    return deferred.promise;
+      const token: AcsToken = AcsToken.fromUnderscore(response.data)
+      // console.log(JSON.stringify(token, null, 2))
+      deferred.resolve(token)
+    })
+    .catch((reason) => {
+      deferred.reject(reason)
+    })
+    return deferred.promise
   }
 }

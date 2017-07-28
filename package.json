@@ -5,36 +5,22 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "dist": "./node_modules/.bin/tsc -p tsconfig.json --outDir dist",
-    "devbuild": "fly build",
-    "lint": "fly lint",
-    "prespec": "npm run lint",
-    "spec": "fly spec ",
-    "clean": "fly clean",
-    "superclean": "fly superclean"
+    "spec": "./node_modules/.bin/jest dist/test/*.test.js",
+    "clean": "rm -rf dist",
+    "lint": "./node_modules/.bin/tslint  --type-check --project .",
+    "dist": "rm -rf dist;mkdir dist;./node_modules/.bin/tsc -p tsconfig.json --outDir dist"
   },
   "author": "Kumori",
   "license": "ISC",
   "dependencies": {
-    "q": "1.5.0",
-    "request": "2.81.0"
+    "axios": "0.16.2"
   },
   "devDependencies": {
     "tslint": "5.4.3",
     "typescript": "2.3.3",
-    "@types/request": "0.0.43",
     "@types/node": "7.0.22",
-    "@types/bluebird": "3.5.4",
-    "@types/q": "1.0.0",
     "@types/jest": "19.2.3",
-    "fly": "2.0.6",
-    "fly-clear": "1.0.1",
-    "fly-mocha": "1.0.2",
-    "fly-shell": "2.1.0",
-    "fly-typescript": "1.1.0",
-    "fly-watch": "1.1.1",
     "jest": "20.0.3",
-    "ts-jest": "20.0.4",
     "tslint-config-standard": "5.0.2"
   }
 }

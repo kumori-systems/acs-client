@@ -1,28 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const q = require("q");
-const request = require("request");
+const axios_1 = require("axios");
 const _1 = require(".");
+const deferred_1 = require("./deferred");
 class AcsClient {
     constructor(basePath) {
         this.basePath = basePath;
     }
     login(username, password) {
-        const deferred = q.defer();
+        const deferred = new deferred_1.Deferred();
         const loginOptions = {
             auth: { username, password },
-            url: this.basePath + "/login",
+            url: this.basePath + '/login'
         };
-        request(loginOptions, (error, response, body) => {
-            if (error != null) {
-                return deferred.reject(error);
+        axios_1.default(loginOptions)
+            .then((response) => {
+            if (response.status !== 200) {
+                return deferred.reject(new Error('Unauthorized'));
             }
-            if (response.statusCode !== 200) {
-                return deferred.reject(new Error("Unauthorized"));
-            }
-            const token = _1.AcsToken.fromUnderscore(JSON.parse(body));
-            // console.log(JSON.stringify(token, null, 2));
+            const token = _1.AcsToken.fromUnderscore(response.data);
+            // console.log(JSON.stringify(token, null, 2))
             deferred.resolve(token);
+        })
+            .catch((reason) => {
+            deferred.reject(reason);
         });
         return deferred.promise;
     }
