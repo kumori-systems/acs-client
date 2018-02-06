@@ -27,6 +27,28 @@ class AcsClient {
         });
         return deferred.promise;
     }
+    /**
+     * Taking the previous token, obtains a new token.
+     */
+    refreshToken(previousToken) {
+        const deferred = new deferred_1.Deferred();
+        const loginOptions = {
+            headers: { 'Authorization': 'Bearer ' + previousToken },
+            url: this.basePath + '/tokens/refresh'
+        };
+        axios_1.default(loginOptions)
+            .then((response) => {
+            if (response.status !== 200) {
+                return deferred.reject(new Error('Unauthorized'));
+            }
+            const token = _1.AcsToken.fromUnderscore(response.data);
+            deferred.resolve(token);
+        })
+            .catch((reason) => {
+            deferred.reject(reason);
+        });
+        return deferred.promise;
+    }
 }
 exports.AcsClient = AcsClient;
 //# sourceMappingURL=acs-client.js.map

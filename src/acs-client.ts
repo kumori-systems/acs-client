@@ -31,4 +31,29 @@ export class AcsClient {
     })
     return deferred.promise
   }
+
+  /**
+   * Taking the previous token, obtains a new token.
+   */
+  public refreshToken (previousToken: string): Promise<AcsToken> {
+    const deferred: Deferred<AcsToken> = new Deferred<AcsToken>()
+    const loginOptions: AxiosRequestConfig = {
+      headers: {'Authorization': 'Bearer ' + previousToken},
+      url: this.basePath + '/tokens/refresh'
+    }
+
+    Axios(loginOptions)
+    .then((response: AxiosResponse) => {
+      if (response.status !== 200) {
+        return deferred.reject(new Error('Unauthorized'))
+      }
+      const token: AcsToken = AcsToken.fromUnderscore(response.data)
+      deferred.resolve(token)
+    })
+    .catch((reason) => {
+      deferred.reject(reason)
+    })
+    return deferred.promise
+  }
+
 }
