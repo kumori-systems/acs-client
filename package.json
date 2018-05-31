@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Client Stub for Kumori Platform's ACS service",
   "main": "lib/index",
-  "typings": "lib/index.d.ts",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "taskr build",
     "lint": "taskr lint",
