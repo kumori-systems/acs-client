@@ -1,6 +1,6 @@
 {
   "verbose": true,
-  "bail": true,
+  "bail": false,
   "notify": true,
   "collectCoverage": true,
   "collectCoverageFrom": [
