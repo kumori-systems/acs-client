@@ -13,6 +13,10 @@
   },
   "author": "Kumori Systems <info@kumori.systems>",
   "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/kumori-systems/acs-client.git"
+  },
   "dependencies": {
     "axios": "0.16.2"
   },
